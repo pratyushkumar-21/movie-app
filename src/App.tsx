@@ -1,5 +1,11 @@
+import Movies from "./components/movies";
+
 function App() {
-  return <div>Hello World!</div>;
+  return (
+    <div>
+      <Movies />
+    </div>
+  );
 }
 
 export default App;
