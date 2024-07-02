@@ -1,8 +1,20 @@
+import { useContext } from "react";
 import MovieCard from "./MovieCard";
-import { MovieType } from "../../../utils/api_response_types";
+import MovieContext from "./context";
+import MoviesLoader from "./MoviesLoader";
 
-type MovieListPropsType = { movies: MovieType[] };
+type MovieListPropsType = { loading: boolean };
 
-export default function MovieList(props: MovieListPropsType) {
-  return <div>MovieList</div>;
+export default function MovieList({ loading }: MovieListPropsType) {
+  const { movies } = useContext(MovieContext);
+
+  if (loading) return <MoviesLoader />;
+
+  return (
+    <section className="movie-list-container">
+      {movies?.map((movie) => (
+        <MovieCard key={movie.id} {...movie} />
+      ))}
+    </section>
+  );
 }
