@@ -1,20 +1,24 @@
 import { useContext } from "react";
 import MovieCard from "./MovieCard";
 import MovieContext from "./context";
-import MoviesLoader from "./MoviesLoader";
 
-type MovieListPropsType = { loading: boolean };
-
-export default function MovieList({ loading }: MovieListPropsType) {
+export default function MovieList() {
   const { movies } = useContext(MovieContext);
-
-  if (loading) return <MoviesLoader />;
 
   return (
     <section className="movie-list-container">
-      {movies?.map((movie) => (
-        <MovieCard key={movie.id} {...movie} />
-      ))}
+      {Object.keys(movies)?.map((year) => {
+        return (
+          <div key={year}>
+            <h1>{year}</h1>
+            <div className="movie-list">
+              {movies[year].map((movie) => (
+                <MovieCard key={movie.id} {...movie} />
+              ))}
+            </div>
+          </div>
+        );
+      })}
     </section>
   );
 }

@@ -1,29 +1,57 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Header from "./header";
 import MovieList from "./movie_list";
-import { MovieType } from "../../utils/api_response_types";
-import MovieContext from "./movie_list/context";
+import MovieContext, { MoviesStateType } from "./movie_list/context";
+import InfiniteScroll from "../common/InfiniteScroll";
+import MoviesLoader from "./movie_list/MoviesLoader";
 import { fetchMovies } from "../../utils/api";
 
 export default function Movies() {
-  const [movies, setMovies] = useState<MovieType[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [movies, setMovies] = useState<MoviesStateType>({});
+  const [releaseYear, setReleaseYear] = useState(2012);
+  const [movieLoading, setMovieLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+
+  const loadMovies = useCallback(() => {
+    setMovieLoading(true);
+
+    const resp = fetchMovies({ primary_release_year: releaseYear });
+    resp.then((data) => {
+      if (data?.data) {
+        const { results } = data.data;
+        const movieYear = releaseYear.toString();
+
+        if (results.length > 0) {
+          setMovies((prevMovies) => ({
+            ...prevMovies,
+            [movieYear]: results.slice(0, 20),
+          }));
+
+          setReleaseYear((releaseYear) => releaseYear + 1);
+        } else setHasMore(false);
+
+        setMovieLoading(false);
+      }
+    });
+  }, [releaseYear]);
 
   useEffect(() => {
-    setTimeout(() => {
-      const resp = fetchMovies();
-      resp.then((data) => {
-        if (data?.data) setMovies(data.data.results);
-        setLoading(false);
-      });
-    }, 2000);
+    loadMovies();
   }, []);
 
   return (
     <MovieContext.Provider value={{ movies, setMovies }}>
       <div>
         <Header />
-        <MovieList loading={loading} />
+        <InfiniteScroll
+          loadMore={loadMovies}
+          apiCallInitated={movieLoading}
+          loader={<MoviesLoader />}
+          hasMore={hasMore}
+        >
+          <MovieList />
+          {!hasMore && <div className="footer">Movie List Ended!</div>}
+        </InfiniteScroll>
       </div>
     </MovieContext.Provider>
   );
