@@ -1,8 +1,15 @@
+import { useContext } from "react";
+import MovieContext from "./context";
 import { MovieType } from "../../../utils/api_response_types";
 import { getImageUrl, getSlicedString } from "../../../utils/common";
 
 export default function MovieCard(props: MovieType) {
-  const { title, backdrop_path, poster_path, overview } = props;
+  const { title, backdrop_path, poster_path, overview, genre_ids } = props;
+  const { genres } = useContext(MovieContext);
+
+  const genreNames = genres
+    .filter((genre) => genre_ids.includes(genre.id))
+    .map((genre) => genre.name);
 
   return (
     <div className="movie-card-container">
@@ -13,7 +20,7 @@ export default function MovieCard(props: MovieType) {
         loading="lazy"
       />
       <h4>{title}</h4>
-      <p>Genre: PENDING</p>
+      {genreNames.length > 0 && <div>Genre:{genreNames.join(", ")}</div>}
       <p>{getSlicedString(overview)}</p>
     </div>
   );

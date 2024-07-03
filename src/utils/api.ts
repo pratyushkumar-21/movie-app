@@ -33,6 +33,7 @@ type fetchMoviesParamType = {
   sort_by?: string;
   primary_release_year?: number;
   vote_count_gte?: number;
+  with_genres: number[];
 };
 
 export const fetchMovies = async ({

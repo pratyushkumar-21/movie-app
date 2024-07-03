@@ -1,6 +1,10 @@
-import { GenresStateType } from "../movie_list/context";
+import { GenreType } from "../../../utils/api_response_types";
 
-export default function GenreCard(props: GenresStateType) {
+interface GenreCardPropsType extends GenreType {
+  isActive: boolean;
+}
+
+export default function GenreCard(props: GenreCardPropsType) {
   const { name, isActive, id } = props;
   return (
     <div

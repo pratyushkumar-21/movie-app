@@ -2,11 +2,11 @@ import { ReactNode, useCallback, useEffect, useRef } from "react";
 
 type InfiniteScrollPropsType = {
   children: ReactNode;
-  loadMore: () => void;
+  loadMore: (isScrollsUp?: boolean) => void;
   threshold?: number;
   apiCallInitated?: boolean;
   loader?: ReactNode;
-  hasMore?: boolean;
+  hasMore: boolean;
 };
 
 export default function InfiniteScroll(props: InfiniteScrollPropsType) {
@@ -27,12 +27,16 @@ export default function InfiniteScroll(props: InfiniteScrollPropsType) {
 
     const { scrollTop, scrollHeight, clientHeight } = containerElement;
 
+    //handle scrolls down
     if (
       scrollTop + clientHeight + threshold >= scrollHeight &&
       hasMore &&
       !apiCallInitated
     )
-      loadMore();
+      loadMore(false);
+
+    //handle scrolls up
+    if (scrollTop <= threshold && !apiCallInitated && hasMore) loadMore(true);
   }, [loadMore, hasMore, apiCallInitated]);
 
   useEffect(() => {
