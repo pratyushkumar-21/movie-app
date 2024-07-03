@@ -1,9 +1,14 @@
-import { ApiResponseType, MovieListResponseType } from "./api_response_types";
+import {
+  ApiResponseType,
+  MovieListResponseType,
+  GenreResponseType,
+} from "./api_response_types";
 import { makeQueryParams } from "./common";
 
 export const API_HOST = "https://api.themoviedb.org";
 export const API_KEY = "2dca580c2a14b55200e784d157207b4d";
 const FETCH_MOVIES = "3/discover/movie";
+const FETCH_GENRES = "3/genre/movie/list";
 
 async function fetcher<T>(url: string): Promise<ApiResponseType<T>> {
   try {
@@ -44,8 +49,15 @@ export const fetchMovies = async ({
     ...rest,
   });
 
-  const endPoint = `${FETCH_MOVIES}?${params}`;
-  const resp = await fetcher<MovieListResponseType>(endPoint);
+  const url = `${FETCH_MOVIES}?${params}`;
+  const resp = await fetcher<MovieListResponseType>(url);
+
+  return resp;
+};
+
+export const fetchGenres = async () => {
+  const url = `${FETCH_GENRES}?api_key=${API_KEY}`;
+  const resp = await fetcher<GenreResponseType>(url);
 
   return resp;
 };

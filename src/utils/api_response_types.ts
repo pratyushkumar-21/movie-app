@@ -26,3 +26,12 @@ export interface MovieType {
   vote_average: number;
   vote_count: number;
 }
+
+export interface GenreResponseType {
+  genres: GenreType[];
+}
+
+export interface GenreType {
+  id: number;
+  name: string;
+}
