@@ -6,6 +6,7 @@ import {
 import { makeQueryParams } from "./common";
 
 export const API_HOST = "https://api.themoviedb.org";
+export const IMAGE_API_HOST = "https://image.tmdb.org/t/p/w1280";
 export const API_KEY = "2dca580c2a14b55200e784d157207b4d";
 const FETCH_MOVIES = "3/discover/movie";
 const FETCH_GENRES = "3/genre/movie/list";

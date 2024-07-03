@@ -1,9 +1,8 @@
-import { API_HOST, API_KEY } from "./api";
+import { IMAGE_API_HOST } from "./api";
 
-export const getImageUrl = (path: string) =>
-  `${API_HOST}/3/discover/movie${path}?api_key=${API_KEY}`;
+export const getImageUrl = (path: string) => `${IMAGE_API_HOST}/${path}`;
 
-export const getSlicedString = (str: string, endIndex = 80) =>
+export const truncateText = (str: string, endIndex = 80) =>
   `${str.slice(0, endIndex)}${str.length > endIndex ? "..." : ""}`;
 
 export const makeQueryParams = (paramsObject: { [key: string]: any }) => {
