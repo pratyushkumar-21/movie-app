@@ -21,6 +21,7 @@ export default function Movies() {
   const [genres, setGenres] = useState<GenreType[]>([]);
   const [genreLoading, setGenreLoading] = useState(false);
   const [selectedGenres, setSelectedGenres] = useState<Set<number>>(new Set());
+  const [keywords, setKeywords] = useState("");
 
   const currentYear = useMemo(() => new Date().getFullYear(), []);
 
@@ -34,6 +35,7 @@ export default function Movies() {
       const resp = fetchMovies({
         primary_release_year: releaseYear,
         with_genres: Array.from(selectedGenres),
+        with_keywords: keywords,
       });
 
       resp.then((data) => {
@@ -65,7 +67,7 @@ export default function Movies() {
         }
       });
     },
-    [movieReleaseYears, selectedGenres]
+    [movieReleaseYears, selectedGenres, keywords]
   );
 
   const loadGenres = useCallback(async () => {
@@ -84,10 +86,10 @@ export default function Movies() {
     loadGenres();
   }, []);
 
-  //fetch movies intially and also when genre selected
+  //fetch movies intially and also when genre selected or search happens
   useEffect(() => {
     loadMovies();
-  }, [selectedGenres]);
+  }, [selectedGenres, keywords]);
 
   return (
     <MovieContext.Provider
@@ -99,6 +101,8 @@ export default function Movies() {
         setMovieReleaseYears,
         setSelectedGenres,
         selectedGenres,
+        setKeywords,
+        keywords,
       }}
     >
       <Header />

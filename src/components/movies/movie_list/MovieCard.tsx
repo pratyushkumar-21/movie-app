@@ -39,7 +39,9 @@ export default function MovieCard(props: MovieType) {
           </div>
         </div>
         <div>{genreNames.join(", ")}</div>
-        <div>Popularity Score - {popularity}</div>
+        <div>
+          Popularity Score - <strong>{popularity.toFixed(2)}</strong>
+        </div>
         <div>{truncateText(overview)}</div>
       </div>
     </div>
