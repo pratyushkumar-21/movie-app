@@ -2,17 +2,10 @@ import { useContext, MouseEvent } from "react";
 import MovieContext from "../movie_list/context";
 import GenreCard from "./GenreCard";
 import GenreLoader from "./GenreLoader";
-import { DEFAULT_MOVIE_RELEASE_YEAR } from "../constant";
 
 export default function GenreList() {
-  const {
-    genres,
-    genreLoading,
-    setMovies,
-    setMovieReleaseYears,
-    setSelectedGenres,
-    selectedGenres,
-  } = useContext(MovieContext);
+  const { genres, genreLoading, setMovies, setSelectedGenres, selectedGenres } =
+    useContext(MovieContext);
 
   const handleGenreClick = (e: MouseEvent<HTMLElement>) => {
     const target = e.target;
@@ -35,12 +28,6 @@ export default function GenreList() {
           });
 
         if (setMovies) setMovies({});
-
-        if (setMovieReleaseYears)
-          setMovieReleaseYears([
-            DEFAULT_MOVIE_RELEASE_YEAR,
-            DEFAULT_MOVIE_RELEASE_YEAR,
-          ]);
       }
     }
   };

@@ -1,4 +1,10 @@
-import { ReactNode, useCallback, useEffect, useRef } from "react";
+import {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  MutableRefObject,
+} from "react";
 
 type InfiniteScrollPropsType = {
   children: ReactNode;
@@ -7,6 +13,7 @@ type InfiniteScrollPropsType = {
   apiCallInitated?: boolean;
   loader?: ReactNode;
   hasMore: boolean;
+  containerRef?: MutableRefObject<HTMLDivElement | null>;
 };
 
 export default function InfiniteScroll(props: InfiniteScrollPropsType) {
@@ -17,12 +24,13 @@ export default function InfiniteScroll(props: InfiniteScrollPropsType) {
     loader,
     hasMore,
     threshold = 500,
+    containerRef,
   } = props;
 
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const ref = useRef<HTMLDivElement | null>(null);
 
   const handleScroll = useCallback(() => {
-    const containerElement = containerRef.current;
+    const containerElement = containerRef?.current;
     if (!containerElement) return;
 
     const { scrollTop, scrollHeight, clientHeight } = containerElement;
@@ -40,7 +48,7 @@ export default function InfiniteScroll(props: InfiniteScrollPropsType) {
   }, [loadMore, hasMore, apiCallInitated]);
 
   useEffect(() => {
-    const containerElement = containerRef.current;
+    const containerElement = containerRef?.current;
 
     //adding scroll event for infinte scrolling
     if (containerElement)
@@ -53,7 +61,7 @@ export default function InfiniteScroll(props: InfiniteScrollPropsType) {
   }, [handleScroll]);
 
   return (
-    <div ref={containerRef} className="infinite-scroll-container">
+    <div ref={containerRef ?? ref} className="infinite-scroll-container">
       {children}
       {apiCallInitated && loader && loader}
     </div>
