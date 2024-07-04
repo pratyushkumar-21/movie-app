@@ -4,7 +4,7 @@ import GenreCard from "./GenreCard";
 import GenreLoader from "./GenreLoader";
 
 function GenreList() {
-  const { genres, genreLoading, setMovies, setSelectedGenres, selectedGenres } =
+  const { genres, genreLoading, setSelectedGenres, selectedGenres } =
     useContext(MovieContext);
 
   const handleGenreClick = useCallback(
@@ -15,24 +15,21 @@ function GenreList() {
         const genreIdStr = target.dataset.genreId;
         const genreId = genreIdStr ? parseFloat(genreIdStr) : null;
 
-        if (genreId) {
-          if (setSelectedGenres)
-            setSelectedGenres((genreSet) => {
-              const updatedSelectedGenres =
-                genreId === Infinity
-                  ? new Set<number>()
-                  : genreSet.delete(genreId)
-                  ? genreSet
-                  : genreSet.add(genreId);
+        if (genreId && setSelectedGenres) {
+          setSelectedGenres((genreSet) => {
+            const updatedSelectedGenres =
+              genreId === Infinity
+                ? new Set<number>()
+                : genreSet.delete(genreId)
+                ? genreSet
+                : genreSet.add(genreId);
 
-              return new Set(updatedSelectedGenres);
-            });
-
-          if (setMovies) setMovies({});
+            return new Set(updatedSelectedGenres);
+          });
         }
       }
     },
-    [setMovies, setSelectedGenres]
+    [setSelectedGenres]
   );
 
   if (genreLoading) return <GenreLoader />;
