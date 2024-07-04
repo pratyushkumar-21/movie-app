@@ -1,10 +1,11 @@
+import { memo } from "react";
 import { GenreType } from "../../../utils/api_response_types";
 
 interface GenreCardPropsType extends GenreType {
   isActive: boolean;
 }
 
-export default function GenreCard(props: GenreCardPropsType) {
+function GenreCard(props: GenreCardPropsType) {
   const { name, isActive, id } = props;
   return (
     <div
@@ -15,3 +16,5 @@ export default function GenreCard(props: GenreCardPropsType) {
     </div>
   );
 }
+
+export default memo(GenreCard);

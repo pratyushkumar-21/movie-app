@@ -1,11 +1,8 @@
-import { useContext } from "react";
+import { memo } from "react";
 import GenreList from "./GenreList";
 import MovieSearch from "./MovieSearch";
-import MovieContext from "../movie_list/context";
 
-export default function Header() {
-  const { keywords, setKeywords } = useContext(MovieContext);
-
+function Header() {
   return (
     <header className="header-container">
       <div className="brand-container">
@@ -16,3 +13,5 @@ export default function Header() {
     </header>
   );
 }
+
+export default memo(Header);

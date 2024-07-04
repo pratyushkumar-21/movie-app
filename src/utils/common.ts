@@ -1,4 +1,4 @@
-import { IMAGE_API_HOST } from "./api";
+import { IMAGE_API_HOST } from "../config";
 
 export const getImageUrl = (path: string) => `${IMAGE_API_HOST}/${path}`;
 

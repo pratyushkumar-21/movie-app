@@ -40,14 +40,14 @@ export default function Movies() {
 
     //fetching 2011 movies
     const resp1 = await fetchMovies({
-      ...commonQueryParam,
       primary_release_year: DEFAULT_MOVIE_RELEASE_YEAR - 1,
+      ...commonQueryParam,
     });
 
     //fetching 2012 movies
     const resp2 = await fetchMovies({
-      ...commonQueryParam,
       primary_release_year: DEFAULT_MOVIE_RELEASE_YEAR,
+      ...commonQueryParam,
     });
 
     if (resp1.data && resp2.data) {

@@ -1,8 +1,8 @@
-import { useContext, useCallback } from "react";
+import { useContext, useCallback, memo } from "react";
 import InputSearch from "../../common/InputSearch";
 import MovieContext from "../movie_list/context";
 
-export default function MovieSearch() {
+function MovieSearch() {
   const { keywords, setKeywords, setMovies } = useContext(MovieContext);
 
   const handleSearch = useCallback(
@@ -17,3 +17,5 @@ export default function MovieSearch() {
 
   return <InputSearch searchValue={keywords} setSearchValue={handleSearch} />;
 }
+
+export default memo(MovieSearch);

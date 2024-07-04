@@ -1,36 +1,39 @@
-import { useContext, MouseEvent } from "react";
+import { useContext, MouseEvent, memo, useCallback } from "react";
 import MovieContext from "../movie_list/context";
 import GenreCard from "./GenreCard";
 import GenreLoader from "./GenreLoader";
 
-export default function GenreList() {
+function GenreList() {
   const { genres, genreLoading, setMovies, setSelectedGenres, selectedGenres } =
     useContext(MovieContext);
 
-  const handleGenreClick = (e: MouseEvent<HTMLElement>) => {
-    const target = e.target;
+  const handleGenreClick = useCallback(
+    (e: MouseEvent<HTMLElement>) => {
+      const target = e.target;
 
-    if (target instanceof HTMLElement) {
-      const genreIdStr = target.dataset.genreId;
-      const genreId = genreIdStr ? parseFloat(genreIdStr) : null;
+      if (target instanceof HTMLElement) {
+        const genreIdStr = target.dataset.genreId;
+        const genreId = genreIdStr ? parseFloat(genreIdStr) : null;
 
-      if (genreId) {
-        if (setSelectedGenres)
-          setSelectedGenres((genreSet) => {
-            const updatedSelectedGenres =
-              genreId === Infinity
-                ? new Set<number>()
-                : genreSet.delete(genreId)
-                ? genreSet
-                : genreSet.add(genreId);
+        if (genreId) {
+          if (setSelectedGenres)
+            setSelectedGenres((genreSet) => {
+              const updatedSelectedGenres =
+                genreId === Infinity
+                  ? new Set<number>()
+                  : genreSet.delete(genreId)
+                  ? genreSet
+                  : genreSet.add(genreId);
 
-            return new Set(updatedSelectedGenres);
-          });
+              return new Set(updatedSelectedGenres);
+            });
 
-        if (setMovies) setMovies({});
+          if (setMovies) setMovies({});
+        }
       }
-    }
-  };
+    },
+    [setMovies, setSelectedGenres]
+  );
 
   if (genreLoading) return <GenreLoader />;
 
@@ -50,3 +53,5 @@ export default function GenreList() {
     </section>
   );
 }
+
+export default memo(GenreList);

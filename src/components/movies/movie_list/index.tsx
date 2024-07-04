@@ -1,9 +1,9 @@
-import { useContext, useRef, useLayoutEffect } from "react";
+import { useContext, useRef, useLayoutEffect, memo } from "react";
 import MovieCard from "./MovieCard";
 import MovieContext from "./context";
 import { DEFAULT_MOVIE_RELEASE_YEAR } from "../constant";
 
-export default function MovieList() {
+function MovieList() {
   const { movies, layout, setLayout, infiniteScrollContainerRef } =
     useContext(MovieContext);
   const defaultMovieContainerRef = useRef<HTMLDivElement | null>(null);
@@ -47,3 +47,5 @@ export default function MovieList() {
     </section>
   );
 }
+
+export default memo(MovieList);

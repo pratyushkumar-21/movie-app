@@ -1,9 +1,9 @@
-import { useContext } from "react";
+import { useContext, memo, useMemo } from "react";
 import MovieContext from "./context";
 import { MovieType } from "../../../utils/api_response_types";
 import { getImageUrl, truncateText } from "../../../utils/common";
 
-export default function MovieCard(props: MovieType) {
+function MovieCard(props: MovieType) {
   const {
     title,
     poster_path,
@@ -15,9 +15,13 @@ export default function MovieCard(props: MovieType) {
   } = props;
   const { genres } = useContext(MovieContext);
 
-  const genreNames = genres
-    .filter((genre) => genre_ids.includes(genre.id))
-    .map((genre) => genre.name);
+  const genreNames = useMemo(
+    () =>
+      genres
+        .filter((genre) => genre_ids.includes(genre.id))
+        .map((genre) => genre.name),
+    [genres]
+  );
 
   return (
     <div className="movie-card-container">
@@ -47,3 +51,5 @@ export default function MovieCard(props: MovieType) {
     </div>
   );
 }
+
+export default memo(MovieCard);
